@@ -1,16 +1,12 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.util.concurrent.TimeUnit;
+import utilities.WebDriverFactory;
 
 public class TC7 {
 
@@ -23,24 +19,18 @@ public class TC7 {
     6. Verify "Fiat selected" text is displayed
     */
 
-    WebElement[][] labels = null;
     WebDriver driver;
 
-    @BeforeClass
-    void setupClass(){
-        WebDriverManager.chromedriver().setup();
-    }
-
     @BeforeMethod
-    void setupMethod() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    public void setup() {
+        driver = WebDriverFactory.getDriver("chrome");
         driver.get("http://cyberkings.kicchi.net/AutomizationPortal.html");
+        driver.manage().window().maximize();
     }
 
     @AfterMethod
-    void tearDown(){
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(1500);
         driver.quit();
     }
 
@@ -48,6 +38,20 @@ public class TC7 {
     public void testCase7(){
         //2. Click "Submit" button
         driver.findElement(By.cssSelector("*[type='submit']")).click();
+
+        //3. Verify "No car selected" text is displayed
+        Assert.assertEquals(driver.findElement(By.id("pCarMessage")).getText(), "No car selected", " Text 'No car selected' not shown");
+
+        //4. Click "Fiat" from the dropdown list
+        Select carsDropdown = new Select(driver.findElement(By.id("cars")));
+        carsDropdown.selectByVisibleText("Fiat");
+
+        //5. Click "Submit" button
+        driver.findElement(By.cssSelector("*[type='submit']")).click();
+
+        //6. Verify "Fiat selected" text is displayed
+        Assert.assertEquals(driver.findElement(By.id("pCarMessage")).getText(), "Fiat selected", " Text 'Fiat selected' not shown");
+
 
 
 
