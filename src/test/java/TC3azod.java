@@ -1,4 +1,5 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
@@ -17,6 +18,8 @@ number
  */
     WebDriverManager.chromedriver().setup();
     WebDriver driver = new ChromeDriver();
+    driver.get("http://cyberkings.kicchi.net/AutomizationPortal.html");
+    driver.findElement(By.xpath("//input[@value='Generate random number']")).click();
 
 }
 }
