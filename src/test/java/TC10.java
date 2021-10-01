@@ -17,6 +17,8 @@ public class TC10 {
     Thread.sleep(2000);
     optionButton.click();
 
+    System.out.println("hello");
+
 
 
   }
