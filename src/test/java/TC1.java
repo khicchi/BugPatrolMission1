@@ -21,7 +21,7 @@ Note: check 5 times one after another, and check if each number is different fro
 
  */
 @Test
-public void test3() throws InterruptedException {
+public void test3()  {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.get("http://cyberkings.kicchi.net/AutomizationPortal.html");
