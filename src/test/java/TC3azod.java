@@ -32,6 +32,7 @@ number
     //Type different number from generated number
     driver.findElement(By.cssSelector("input[name='verifyText']")).sendKeys(generatedNumber+1);
     driver.findElement(By.cssSelector("#btnVerifyNumber")).click();
+    Thread.sleep(1000);
 
     //Check the redFlag
     WebElement redFlag = driver.findElement(By.cssSelector("img[src='cyberKingsImages/failure.png']"));
