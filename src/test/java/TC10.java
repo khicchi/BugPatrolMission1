@@ -18,8 +18,10 @@ public class TC10 {
     optionButton.click();
 
     System.out.println("hello");
-
+    System.out.println("helloaa");
     System.out.println("fadfaf");
+
+    System.out.println("helloaa");
 
 
 
