@@ -3,15 +3,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
+import org.testng.annotations.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class TC1 {
 
@@ -23,55 +19,44 @@ public class TC1 {
 Note: check 5 times one after another, and check if each number is different from others.
 
  */
-@BeforeClass
-public void test3()  {
+WebDriver driver;
+
+    @BeforeMethod
+    void setupMethod(){
         WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    }
+
+    @AfterMethod
+    void tearDownMethod() throws InterruptedException {
+        Thread.sleep(3000);
+        driver.quit();
+    }
+
+    @Test
+    void testCase1(){
         driver.get("http://cyberkings.kicchi.net/AutomizationPortal.html");
+        WebElement buttonGenerate = driver.findElement(By.cssSelector("[onclick='generateRandomNumber()']"));
+        ArrayList<Integer> generatedNumbers = new ArrayList<>();
+        WebElement labelNumber = driver.findElement(By.cssSelector("[onclick='generateRandomNumber()']~p"));
 
-        List<String> GeneralNumber = new ArrayList<>();
-        WebElement generateNumber = driver.findElement(By.xpath("//input[@value='Generate random number']"));
-        generateNumber.click();
-        GeneralNumber.add(generateNumber.getText());
-        String number=GeneralNumber.get(0);
-
-        for (int i = 0; i < 4; i++) {
-
-                //Click on the "Generate random number" button
-                generateNumber = driver.findElement(By.xpath("//input[@value='Generate random number']"));
-                generateNumber.click();
-
-                GeneralNumber.add(generateNumber.getText());
-                for (int j = 0; j < GeneralNumber.size(); j++) {
-                        if (number==GeneralNumber.get(j)){
-                                System.out.println("Random numbers is the same");
-                        }
-                        number=GeneralNumber.get(i);
+        for (int i = 0; i < 5; i++) {
+            buttonGenerate.click();
+            int currentNumber = Integer.parseInt(labelNumber.getText());
+            Assert.assertTrue(currentNumber >= 100 && currentNumber <=999);
+            generatedNumbers.add(currentNumber);
         }
 
-
-
+        for (int i = 0; i < 5; i++) {
+            int occurrences = Collections.frequency(generatedNumbers, generatedNumbers.get(i));
+            Assert.assertEquals(occurrences, 1);
         }
 
-        //
-
-
-
+        System.out.println(generatedNumbers.toString());
     }
 
 
-    @AfterClass
-        public void test()
-    {
-           try {
-                   Thread.sleep(3000);
-           }catch (Exception a){
-                   System.out.println(a.getMessage());
-           }
-
-            WebDriverManager.chromedriver().setup();
-            WebDriver driver = new ChromeDriver();
-            driver.quit();
-    }
 }
 
