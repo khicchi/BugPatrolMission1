@@ -6,10 +6,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TC1 {
 
@@ -27,17 +29,49 @@ public void test3()  {
         WebDriver driver = new ChromeDriver();
         driver.get("http://cyberkings.kicchi.net/AutomizationPortal.html");
 
-
-        //Click on the "Generate random number" button
+        List<String> GeneralNumber = new ArrayList<>();
         WebElement generateNumber = driver.findElement(By.xpath("//input[@value='Generate random number']"));
         generateNumber.click();
-
-        ArrayList<String> GeneralNumber=new ArrayList<>();
         GeneralNumber.add(generateNumber.getText());
+        String number=GeneralNumber.get(0);
+
+        for (int i = 0; i < 4; i++) {
+
+                //Click on the "Generate random number" button
+                generateNumber = driver.findElement(By.xpath("//input[@value='Generate random number']"));
+                generateNumber.click();
+
+                GeneralNumber.add(generateNumber.getText());
+                for (int j = 0; j < GeneralNumber.size(); j++) {
+                        if (number==GeneralNumber.get(j)){
+                                System.out.println("Random numbers is the same");
+                        }
+                        number=GeneralNumber.get(i);
+        }
 
 
 
+        }
 
+        //
+
+
+
+    }
+
+
+    @AfterClass
+        public void test()
+    {
+           try {
+                   Thread.sleep(3000);
+           }catch (Exception a){
+                   System.out.println(a.getMessage());
+           }
+
+            WebDriverManager.chromedriver().setup();
+            WebDriver driver = new ChromeDriver();
+            driver.quit();
     }
 }
 
